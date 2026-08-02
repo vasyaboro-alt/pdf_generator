@@ -1392,7 +1392,7 @@ async function exportPdf(options = {}) {
   if (destination === "drive") {
     const clientId = ensureGoogleClientId();
     if (!clientId) {
-      toast("Для Google Drive нужен Client ID (см. js/config.js)");
+      toast("Для Google Drive нужен Client ID (см. config.js)");
       return;
     }
     try {
