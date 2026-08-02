@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Guide Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,700&family=Russo+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/guide.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark">PDF</span>
+        <div>
+          <h1 class="brand-name">Guide Creator</h1>
+          <p class="brand-tag">Создание PDF-гайдов</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="btn-clear" title="Очистить всё">Сбросить</button>
+        <button type="button" class="btn btn-secondary" id="btn-preview-toggle">Превью</button>
+        <button type="button" class="btn btn-secondary" id="btn-print" title="Через диалог печати браузера">Печать PDF</button>
+        <button type="button" class="btn btn-primary" id="btn-export" title="Скачать или отправить на Google Drive">Сохранить PDF</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel editor-panel" aria-label="Редактор">
+        <div class="panel-scroll">
+
+          <details class="block" open>
+            <summary>1. Текст обложки</summary>
+            <div class="block-body">
+              <label class="field">
+                <span>Название гайда</span>
+                <textarea id="guide-title" rows="3" placeholder="Как создавать PDF гайды">Как создавать&#10;PDF гайды</textarea>
+              </label>
+              <label class="field">
+                <span>Подзаголовок</span>
+                <input id="guide-subtitle" type="text" placeholder="Пошаговая инструкция" value="Пошаговая инструкция" />
+              </label>
+              <label class="field">
+                <span>Автор / мета (внизу содержания)</span>
+                <input id="guide-meta" type="text" placeholder="Автор · 2026" />
+              </label>
+            </div>
+          </details>
+
+          <details class="block" open>
+            <summary>2. Картинка обложки и логотипы</summary>
+            <div class="block-body">
+              <p class="hint">Без картинки обложка будет тёмной. Загрузите фон — и логотип станет читаемее.</p>
+
+              <div class="upload-card upload-card--hero" id="card-coverImage">
+                <div class="upload-preview upload-preview--cover" id="preview-coverImage"></div>
+                <div class="upload-meta">
+                  <strong>Фон обложки</strong>
+                  <span>JPG / PNG — основная картинка на всю страницу</span>
+                </div>
+                <div class="upload-actions">
+                  <label class="btn btn-primary btn-file">
+                    Загрузить фон
+                    <input type="file" id="input-coverImage" accept="image/png,image/jpeg,image/webp" />
+                  </label>
+                  <button type="button" class="btn btn-ghost" id="clear-coverImage" hidden>Убрать</button>
+                </div>
+              </div>
+
+              <div class="uploads">
+                <div class="upload-card" id="card-logoCover">
+                  <div class="upload-preview upload-preview--logo" id="preview-logoCover"></div>
+                  <div class="upload-meta">
+                    <strong>Логотип обложки</strong>
+                    <span>PNG, лучше светлый или с прозрачным фоном</span>
+                  </div>
+                  <div class="upload-actions">
+                    <label class="btn btn-secondary btn-file">
+                      Загрузить
+                      <input type="file" id="input-logoCover" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+                    </label>
+                    <button type="button" class="btn btn-ghost" id="clear-logoCover" hidden>Убрать</button>
+                  </div>
+                </div>
+
+                <div class="upload-card" id="card-logoHeader">
+                  <div class="upload-preview upload-preview--logo" id="preview-logoHeader"></div>
+                  <div class="upload-meta">
+                    <strong>Логотип колонтитулов</strong>
+                    <span>В шапке страниц содержания</span>
+                  </div>
+                  <div class="upload-actions">
+                    <label class="btn btn-secondary btn-file">
+                      Загрузить
+                      <input type="file" id="input-logoHeader" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+                    </label>
+                    <button type="button" class="btn btn-ghost" id="clear-logoHeader" hidden>Убрать</button>
+                  </div>
+                </div>
+              </div>
+
+              <label class="check-row">
+                <input type="checkbox" id="logo-plate" checked />
+                <span>Подложка под логотип на обложке (чтобы лучше читался)</span>
+              </label>
+            </div>
+          </details>
+
+          <details class="block" open>
+            <summary>3. Текст гайда</summary>
+            <div class="block-body">
+              <p class="hint">Скопируйте текст и вставьте <strong>сюда</strong> (Ctrl+V) — он сразу появится в превью справа. Можно также загрузить файл .txt / .md. Поддерживается Markdown: <code>*курсив*</code>, <code>**жирный**</code>, <code>***жирный курсив***</code>, <code>`код`</code>.</p>
+              <label class="field">
+                <span>Текст содержания (вставьте сюда)</span>
+                <textarea id="bulk-text" rows="10" placeholder="Вставьте сюда текст гайда…&#10;&#10;Абзацы разделяйте пустой строкой.&#10;&#10;## Заголовок раздела&#10;Текст раздела…"></textarea>
+              </label>
+              <p class="hint" id="text-status">Превью обновится сразу после вставки.</p>
+              <div class="add-row">
+                <label class="btn btn-secondary btn-file">
+                  Загрузить .txt / .md
+                  <input type="file" id="input-text-file" accept=".txt,.md,text/plain,text/markdown" />
+                </label>
+                <button type="button" class="btn btn-primary" id="btn-apply-text">Обновить превью</button>
+              </div>
+              <label class="check-row">
+                <input type="checkbox" id="text-replace" checked />
+                <span>Заменять содержание целиком (снимите галочку, чтобы добавить в конец)</span>
+              </label>
+            </div>
+          </details>
+
+          <details class="block" open>
+            <summary>4. Блоки и изображения страниц</summary>
+            <div class="block-body">
+              <div class="quick-actions">
+                <button type="button" class="btn btn-secondary" id="btn-add-image">+ Изображение</button>
+                <button type="button" class="btn btn-secondary" id="btn-add-paragraph">+ Абзац</button>
+                <button type="button" class="btn btn-ghost" id="btn-clear-paragraphs" title="Удалить все блоки типа «Абзац»">Очистить абзацы</button>
+                <button type="button" class="btn btn-secondary" id="btn-add-step">+ Шаг</button>
+                <label class="btn btn-secondary btn-file">
+                  Несколько картинок
+                  <input type="file" id="input-multi-images" accept="image/*" multiple />
+                </label>
+              </div>
+              <div id="blocks-list" class="blocks-list"></div>
+              <div class="add-row">
+                <select id="add-block-type">
+                  <option value="heading">Заголовок H1</option>
+                  <option value="subheading">Заголовок H2</option>
+                  <option value="paragraph">Абзац</option>
+                  <option value="step">Шаг</option>
+                  <option value="image">Изображение</option>
+                  <option value="highlight">Выделение</option>
+                  <option value="info">Инфо-блок</option>
+                  <option value="divider">Разделитель</option>
+                </select>
+                <button type="button" class="btn btn-secondary" id="btn-add-block">Добавить блок</button>
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </section>
+
+      <section class="panel preview-panel" aria-label="Превью" id="preview-panel">
+        <div class="preview-toolbar">
+          <span>Превью A4</span>
+          <span class="preview-hint">Обложка + страницы с нумерацией</span>
+        </div>
+        <div class="preview-stage">
+          <div id="guide-root" class="guide-root"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <div class="choice-overlay" id="save-choice-overlay" aria-hidden="true">
+      <div class="choice-card" role="dialog" aria-labelledby="save-choice-title">
+        <h2 id="save-choice-title">Куда сохранить PDF?</h2>
+        <p class="choice-hint">Выберите способ: файл на компьютер или сразу в Google Drive.</p>
+        <div class="choice-actions">
+          <button type="button" class="btn btn-primary choice-btn" id="btn-save-download">
+            <span class="choice-btn-title">Скачать на компьютер</span>
+            <span class="choice-btn-sub">Файл PDF в папку «Загрузки»</span>
+          </button>
+          <button type="button" class="btn btn-secondary choice-btn" id="btn-save-drive">
+            <span class="choice-btn-title">Отправить на Google Drive</span>
+            <span class="choice-btn-sub">Войти в Google и загрузить файл</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-ghost" id="btn-save-cancel">Отмена</button>
+      </div>
+    </div>
+
+    <div class="export-overlay" id="export-overlay" aria-hidden="true">
+      <div class="export-card">
+        <div class="spinner"></div>
+        <p id="export-status">Генерируем PDF…</p>
+        <p class="export-sub" id="export-sub">Подготовка страниц</p>
+        <button type="button" class="btn btn-ghost" id="btn-cancel-export" style="margin-top:0.85rem">Отмена</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
