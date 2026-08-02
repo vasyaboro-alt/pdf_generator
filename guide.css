@@ -1,0 +1,326 @@
+/* Styles for the guide document (preview + PDF) */
+
+.guide-page {
+  width: 210mm;
+  height: 297mm;
+  min-height: 297mm;
+  max-height: 297mm;
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+}
+
+.guide-page + .guide-page {
+  border-top: 1px dashed #d0d0d0;
+}
+
+.guide-cover {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  background: #0a0a1a;
+}
+
+.guide-cover-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.guide-cover-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.guide-cover-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 10, 18, 0.2) 0%,
+    rgba(8, 10, 18, 0.35) 40%,
+    rgba(8, 10, 18, 0.62) 100%
+  );
+}
+
+.guide-cover-logo-wrap {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  z-index: 2;
+  max-width: 46%;
+}
+
+.guide-cover-logo-wrap.has-plate {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.guide-cover-logo {
+  display: block;
+  max-height: 64px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.guide-cover-content {
+  position: relative;
+  z-index: 1;
+  max-width: 85%;
+  padding: 32px;
+}
+
+.guide-cover-title {
+  font-family: "Russo One", "Montserrat", sans-serif;
+  font-size: 46px;
+  color: #ffde04;
+  margin: 0;
+  letter-spacing: 1.5px;
+  line-height: 1.35;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+  white-space: pre-line;
+}
+
+.guide-cover-subtitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #fff;
+  margin: 22px 0 0;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+  line-height: 1.45;
+}
+
+.guide-content-page {
+  padding: 12mm 18mm 12mm;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.guide-header {
+  flex: 0 0 10mm;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 3mm;
+}
+
+.guide-header img {
+  height: 9mm;
+  width: auto;
+  max-width: 55mm;
+  object-fit: contain;
+}
+
+.guide-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+  color: #111111;
+  line-height: 1.75;
+  font-size: 15px;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+
+.guide-footer {
+  flex: 0 0 auto;
+  margin-top: 4mm;
+  padding-top: 2mm;
+  border-top: 1.5px solid #c8c8c8;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333333;
+  text-align: right;
+}
+
+.guide-body h1 {
+  font-family: "Russo One", "Montserrat", sans-serif;
+  font-size: 28px;
+  color: #000000;
+  margin: 0 0 16px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.guide-body h2 {
+  font-family: "Russo One", "Montserrat", sans-serif;
+  font-size: 20px;
+  color: #000000;
+  border-top: 3px solid #ffde04;
+  padding-top: 12px;
+  margin: 16px 0 10px;
+  line-height: 1.35;
+}
+
+.guide-body p {
+  margin: 6px 0 12px;
+  text-align: justify;
+  color: #111111;
+}
+
+.guide-body em,
+.guide-step em,
+.guide-highlight em,
+.guide-info em,
+.guide-meta em {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+.guide-body strong,
+.guide-step strong,
+.guide-highlight strong,
+.guide-info strong,
+.guide-meta strong {
+  font-weight: 700;
+}
+
+.guide-body code,
+.guide-step code,
+.guide-highlight code,
+.guide-info code {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.92em;
+  font-weight: 600;
+  background: #eeeeee;
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+
+.guide-step {
+  background: #f4f4f4;
+  border: 1.5px solid #bdbdbd;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+.guide-step-title {
+  font-family: "Russo One", "Montserrat", sans-serif;
+  font-size: 17px;
+  color: #000000;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.35;
+}
+
+.guide-step-number {
+  display: inline-block;
+  background: #ffde04;
+  color: #000000;
+  font-weight: 700;
+  padding: 3px 11px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: "Russo One", "Montserrat", sans-serif;
+}
+
+.guide-step p {
+  margin: 0;
+  text-align: left;
+}
+
+.guide-image {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.guide-image img {
+  display: block;
+  max-width: 100%;
+  max-height: 130mm;
+  width: auto;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.guide-image figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.guide-highlight {
+  background: #ffde04;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  margin: 12px 0;
+  font-size: 15px;
+  color: #000000;
+  line-height: 1.55;
+}
+
+.guide-info {
+  background: #f0f0f0;
+  border: 1.5px solid #bdbdbd;
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111111;
+  line-height: 1.55;
+}
+
+.guide-divider {
+  text-align: center;
+  font-size: 20px;
+  color: #d4b800;
+  margin: 14px 0;
+  letter-spacing: 6px;
+}
+
+.guide-meta {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+  margin-top: 16px;
+  padding: 12px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  border: 1.5px solid #bdbdbd;
+  line-height: 1.5;
+}
+
+.guide-root.exporting .guide-page + .guide-page {
+  border-top: none;
+}
+
+@media print {
+  .guide-page + .guide-page {
+    border-top: none;
+  }
+
+  .guide-page {
+    margin: 0;
+    box-shadow: none;
+  }
+}
